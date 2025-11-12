@@ -368,7 +368,7 @@ input[type="number"]{ -moz-appearance: textfield; }
   <!-- Linha 2 -->
   <div class="field">
     <label class="muted" for="sim_margem">Margem líquida</label>
-    <input id="sim_margem" type="number" min="5" max="90" step="1" value="20" placeholder="ex.: 25">
+    <input id="sim_margem" type="number" min="5" max="90" step="1" value="30" placeholder="ex.: 25">
     <span class="affix">%</span>
   </div>
 
@@ -377,7 +377,7 @@ input[type="number"]{ -moz-appearance: textfield; }
   <!-- Linha 3 -->
   <div class="field">
     <label class="muted" for="sim_midiamensal">Mídia mensal (tráfego)</label>
-    <input id="sim_midiamensal" type="number" min="0" step="100" value="3000" placeholder="ex.: 3.000">
+    <input id="sim_midiamensal" type="number" min="0" step="100" value="2000" placeholder="ex.: 2.000">
     <span class="affix">R$</span>
   </div>
 
@@ -572,7 +572,7 @@ input[type="number"]{ -moz-appearance: textfield; }
 
 <script>
 (function(){
-  const CUSTO_ANUAL_BASE = 26300; // setup + 11 meses gestão
+  const CUSTO_ANUAL_BASE = 24300; // setup + 11 meses gestão
   const svg = document.getElementById('sim_svg');
   const resumo = document.getElementById('sim_resumo');
   const ids = ['sim_ticket','sim_qtd','sim_margem','sim_midiamensal','sim_mesesmidia'];
@@ -581,7 +581,7 @@ input[type="number"]{ -moz-appearance: textfield; }
   function render(){
     const ticket   = parseFloat(inputs[0].value)||1000;
     const qtd      = parseFloat(inputs[1].value)||67;
-    const margem   = parseFloat(inputs[2].value)||20;
+    const margem   = parseFloat(inputs[2].value)||30;
     const midiaMes = parseFloat(inputs[3].value)||0;
     const mesesAds = parseFloat(inputs[4].value)||0;
 
@@ -694,4 +694,3 @@ input[type="number"]{ -moz-appearance: textfield; }
 
 </body>
 </html>
-
