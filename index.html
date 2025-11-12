@@ -122,6 +122,125 @@ footer a:hover {
       .grid-2,.pricing,.charts{grid-template-columns:1fr}
       .timeline{grid-template-columns:1fr 1fr}
     }
+    /* ===== Simulador de ROI ===== */
+.simulator {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.sim-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.sim-inputs input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+}
+
+.sim-inputs hr {
+  grid-column: 1 / -1;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin: 8px 0;
+}
+
+#sim_resumo {
+  grid-column: 1 / -1;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.6;
+  font-size: 13.5px;
+}
+
+.sim-chart {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 24px; /* evita corte inferior */
+}
+
+.sim-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* ===== Campos do simulador (UX melhorada) ===== */
+.sim-inputs{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap:16px 22px;
+}
+
+.sim-inputs hr{
+  grid-column: 1 / -1;
+  border:none;
+  border-top:1px solid rgba(255,255,255,.08);
+  margin:4px 0 8px;
+}
+
+.field{ display:flex; flex-direction:column; gap:8px; }
+
+.field label{
+  font-weight:600;
+  letter-spacing:.2px;
+}
+
+.field input{
+  width:100%;
+  height:46px;
+  padding:0 14px;
+  padding-right:64px;             /* espaço pro sufixo */
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  outline:none;
+  transition: .18s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.field input::placeholder{ color: rgba(231,237,248,.35); }
+
+/* foco: borda + leve glow dourado */
+.field input:focus{
+  border-color: rgba(217,179,16,.65);
+  box-shadow: 0 0 0 3px rgba(217,179,16,.18);
+}
+
+/* sufixos (R$, %, meses) */
+.field .affix{
+  position: relative;
+  margin-top:-44px;               /* alinha verticalmente dentro do input */
+  align-self:flex-end;
+  translate: -10px 0;
+  height:32px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);
+  color:var(--muted);
+  font-size:12px;
+  pointer-events:none;
+}
+
+/* remove setas de inputs numéricos no desktop (mantém teclado numérico no mobile) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+input[type="number"]{ -moz-appearance: textfield; }
+
+/* responsivo */
+@media (max-width: 780px){
+  .sim-inputs{ grid-template-columns: 1fr; }
+}
+
   </style>
 </head>
 <body>
@@ -133,10 +252,11 @@ footer a:hover {
         <p class="lead">Projeto completo de <strong>estrutura digital integrada</strong> (site + integrações + dados) e <strong>consultoria estratégica de marketing</strong> (tráfego, e-mail e performance) para aumentar visibilidade, valor percebido e previsibilidade de novas turmas.</p>
         <div class="btns">
           <button class="btn primary" onclick="window.print()">Baixar em PDF</button>
+          <a class="btn primary" href="#proximo-passo">Aprovar proposta</a>
           <a class="btn ghost" href="#investimento">Ver investimento</a>
         </div>
         <div class="kpis">
-          <div class="kpi"><h3>Prazo de entrega</h3><p>Até 30 dias</p></div>
+          <div class="kpi"><h3>Prazo de publicação</h3><p>Em até 30 dias</p></div>
           <div class="kpi"><h3>Consultoria</h3><p>1º mês gratuito</p></div>
           <div class="kpi"><h3>Compromisso</h3><p>Sem fidelidade</p></div>
         </div>
@@ -175,7 +295,7 @@ footer a:hover {
           <h3 style="margin-top:0">Entregas do site</h3>
           <ul class="list">
             <li>Home, Sobre, Portfólio, Serviços, Depoimentos, Contato</li>
-            <li>SEO técnico, copy de posicionamento e performance</li>
+            <li>SEO técnico e <strong>copy de posicionamento</strong> (texto persuasivo e performance)</li>
             <li>Integrações: GA4, Pixel, WhatsApp, formulários inteligentes</li>
             <li>Link com portal de clientes</li>
             <li>Suporte e ajustes gratuitos por 30 dias após publicação</li>
@@ -195,46 +315,90 @@ footer a:hover {
     </section>
 
     <section>
-      <h2>Etapa 2 — Consultoria & Gestão Contínua</h2>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <h3 style="margin-top:0">Marketing de Performance</h3>
-          <ul class="list">
-            <li>Campanhas em Meta Ads e Google Ads (captação e remarketing)</li>
-            <li>Segmentação por universidades/municípios; testes A/B</li>
-            <li>Relatórios mensais e reuniões quinzenais (2h)</li>
-          </ul>
-        </div>
-        <div class="card card-pad">
-          <h3 style="margin-top:0">Comunicação e Experiência</h3>
-          <ul class="list">
-            <li>Fluxos de e-mail: boas-vindas, lembretes pré-evento, instruções</li>
-            <li>Pós-evento: agradecimento, pesquisa e incentivo a indicações</li>
-            <li>Calendário sazonal (Fev–Mar e Ago–Nov com maior intensidade)</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+  <h2>Etapa 2 — Consultoria & Gestão Contínua</h2>
+  <div class="grid-2">
+    <!-- Marketing de Performance -->
+    <div class="card card-pad">
+      <h3 style="margin-top:0">Marketing de Performance</h3>
+      <ul class="list">
+        <li>Gestão de campanhas em Meta Ads e Google Ads — foco em captação, remarketing e autoridade regional.</li>
+        <li>Segmentação inteligente por universidade, curso e cidade, garantindo relevância máxima em cada anúncio.</li>
+        <li>Testes A/B contínuos de criativos e mensagens para refinar conversão e reduzir custo por lead.</li>
+        <li><strong>Planejamento sazonal</strong> (Fev–Mar e Ago–Nov) com picos de mídia e reativação de ex-alunos.</li>
+        <li>Relatórios mensais de performance e reuniões quinzenais (2h) com recomendações de otimização baseadas em dados.</li>
+      </ul>
+    </div>
+
+    <!-- Comunicação e Experiência -->
+    <div class="card card-pad">
+      <h3 style="margin-top:0">Comunicação & Automação Inteligente</h3>
+      <ul class="list">
+        <li>Desenho e implementação de <strong>fluxos automatizados de e-mail</strong> (boas-vindas, lembretes, instruções, pesquisa e follow-up).</li>
+        <li>Mensagens personalizadas conforme o <strong>perfil e estágio de cada formando</strong> — comunicação dirigida, não genérica.</li>
+        <li>Monitoramento de abertura, cliques e engajamento para ajustes finos de copy e timing.</li>
+        <li>Criação de experiências digitais que reduzem dúvidas, aumentam satisfação e geram novas indicações espontâneas.</li>
+        <li>Calendário de comunicação anual, com intensificação nos períodos de captação e eventos.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
 
     <h2>Projeção de ganhos</h2>
 
-      <div class="card card-pad" style="margin-top:16px">
+     <!-- ===== SIMULADOR DE ROI ===== -->
+<div class="card card-pad" style="margin-top:16px">
   <h3 style="margin-top:0">Simulador dinâmico de ROI</h3>
-  <div class="grid-2">
-    <div>
-      <label class="muted" for="sim_ticket">Ticket por formando (R$)</label>
-      <input id="sim_ticket" type="number" min="100" value="1000" style="width:100%;margin:6px 0 12px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:var(--text)">
-      <label class="muted" for="sim_qtd">Formandos por turma</label>
-      <input id="sim_qtd" type="number" min="10" value="67" style="width:100%;margin:6px 0 12px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:var(--text)">
-      <label class="muted" for="sim_margem">Margem líquida (%)</label>
-      <input id="sim_margem" type="number" min="5" max="50" value="20" style="width:100%;margin:6px 0 12px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:var(--text)">
-      <p class="note" id="sim_resumo" style="margin-top:10px"></p>
-    </div>
-    <div class="chart">
-      <svg id="sim_svg" viewBox="0 0 600 260" role="img" aria-label="Simulador de ROI"></svg>
+
+  <div class="simulator">
+    <div class="sim-inputs">
+  <!-- Linha 1 -->
+  <div class="field">
+    <label class="muted" for="sim_ticket">Ticket por formando</label>
+    <input id="sim_ticket" type="number" min="100" step="50" value="1000" placeholder="ex.: 1.000">
+    <span class="affix">R$</span>
+  </div>
+
+  <div class="field">
+    <label class="muted" for="sim_qtd">Formandos por turma</label>
+    <input id="sim_qtd" type="number" min="10" step="1" value="67" placeholder="ex.: 60">
+  </div>
+
+  <!-- Linha 2 -->
+  <div class="field">
+    <label class="muted" for="sim_margem">Margem líquida</label>
+    <input id="sim_margem" type="number" min="5" max="90" step="1" value="20" placeholder="ex.: 25">
+    <span class="affix">%</span>
+  </div>
+
+  <hr>
+
+  <!-- Linha 3 -->
+  <div class="field">
+    <label class="muted" for="sim_midiamensal">Mídia mensal (tráfego)</label>
+    <input id="sim_midiamensal" type="number" min="0" step="100" value="3000" placeholder="ex.: 3.000">
+    <span class="affix">R$</span>
+  </div>
+
+  <div class="field">
+    <label class="muted" for="sim_mesesmidia">Meses de mídia no ano</label>
+    <input id="sim_mesesmidia" type="number" min="0" max="12" step="1" value="6" placeholder="0–12">
+    <span class="affix">meses</span>
+  </div>
+
+  <!-- Resumo ocupa a linha inteira -->
+  <p class="note" id="sim_resumo"></p>
+</div>
+
+
+    <div class="sim-chart">
+      <svg id="sim_svg" viewBox="0 0 1000 360" role="img" aria-label="Simulador de ROI"></svg>
     </div>
   </div>
-</div>    
+</div>
+
+
     </section>
 
    <!-- BENEFÍCIOS (destaque) -->
@@ -267,28 +431,6 @@ footer a:hover {
     </div>
   </div>
 </section>
-  
-    <section>
-      <h2>Benefícios para o negócio</h2>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <h3 style="margin-top:0">Captação & Autoridade</h3>
-          <ul class="list">
-            <li>Vitrine premium que diferencia de concorrentes</li>
-            <li>SEO local e mídia com dados mensuráveis</li>
-            <li>Prova social: depoimentos e cases</li>
-          </ul>
-        </div>
-        <div class="card card-pad">
-          <h3 style="margin-top:0">Experiência do Formando</h3>
-          <ul class="list">
-            <li>E-mails de onboarding, lembretes e instruções</li>
-            <li>Pós-evento com agradecimento e pesquisa</li>
-            <li>Mais satisfação → mais indicações</li>
-          </ul>
-        </div>
-      </div>
-    </section>
 
     <!-- INVESTIMENTO -->
 <section id="investimento">
@@ -378,12 +520,37 @@ footer a:hover {
       </div>
     </section>
 
-    <section class="card card-pad">
+    <!-- VALIDADE + NÃO INCLUSO + SLA -->
+  <section class="card card-pad">
+    <h2 style="margin-top:0">Validade & Escopo</h2>
+
+    <h3 style="margin:12px 0 6px">Validade da proposta</h3>
+    <p class="muted">Esta proposta é válida por <strong>15 dias</strong> a partir do envio.</p>
+
+    <h3 style="margin:18px 0 6px">O que não está incluso</h3>
+    <ul class="list">
+      <li>Produção de fotos e vídeos.</li>
+      <li>Criação de conteúdos textuais além do escopo inicial aprovado.</li>
+      <li>Landing pages adicionais fora das páginas previstas no planejamento.</li>
+      <li>Serviços de terceiros e/ou SaaS pagos (se necessários) além dos listados como inclusos.</li>
+      <li>Redirecionamentos complexos de e-mail/servidor legado e migrações fora do ambiente publicado.</li>
+    </ul>
+
+    <h3 style="margin:18px 0 6px">SLA de atendimento</h3>
+    <ul class="list">
+      <li><strong>Ajustes de conteúdo/estilo</strong>: até <strong>1 dia útil</strong>.</li>
+      <li><strong>Mudanças estruturais (novos blocos/seções)</strong>: <strong>em até 2 dias úteis</strong>.</li>
+      <li><strong>Suporte pós-publicação</strong>: incluído por <strong>30 dias</strong>.</li>
+    </ul>
+    </section>
+
+
+    <section id="proximo-passo" class="card card-pad">      
       <h2 style="margin-top:0">Próximo passo</h2>
       <p class="muted">Aprovação desta proposta para iniciarmos o briefing (Semana 1). Prazo total até <strong>30 dias</strong> para publicação do site. 1º mês de consultoria é <strong>gratuito</strong>.</p>
       <div class="btns">
-  <button class="btn primary" onclick="window.print()">Gerar PDF agora</button>
-  <a
+    <button class="btn primary" onclick="window.print()">Gerar PDF agora</button>
+     <a
     class="btn ghost"
     href="https://mail.google.com/mail/?view=cm&fs=1&to=matheusbortolotto7@gmail.com&su=Proposta%20Difoccus%20-%20Aprova%C3%A7%C3%A3o&body=Olá%20Matheus,%0D%0A%0D%0AAceito%20a%20proposta%20apresentada%20para%20início%20do%20projeto.%0D%0A%0D%0AAtt,%0D%0A%5BNome%20do%20responsável%5D"
     target="_blank"
@@ -404,87 +571,125 @@ footer a:hover {
 </footer>
 
 <script>
-  (function(){
-    const CUSTO_ANUAL_FIXO = 39000; // fixo conforme a proposta
+(function(){
+  const CUSTO_ANUAL_BASE = 26300; // setup + 11 meses gestão
+  const svg = document.getElementById('sim_svg');
+  const resumo = document.getElementById('sim_resumo');
+  const ids = ['sim_ticket','sim_qtd','sim_margem','sim_midiamensal','sim_mesesmidia'];
+  const inputs = ids.map(id => document.getElementById(id));
 
-    const svg = document.getElementById('sim_svg');
-    const inputs = ['sim_ticket','sim_qtd','sim_margem'].map(id=>document.getElementById(id));
-    const resumo = document.getElementById('sim_resumo');
+  function render(){
+    const ticket   = parseFloat(inputs[0].value)||1000;
+    const qtd      = parseFloat(inputs[1].value)||67;
+    const margem   = parseFloat(inputs[2].value)||20;
+    const midiaMes = parseFloat(inputs[3].value)||0;
+    const mesesAds = parseFloat(inputs[4].value)||0;
 
-    function render(){
-      const ticket = parseFloat(inputs[0].value)||1000;
-      const qtd = parseFloat(inputs[1].value)||67;
-      const margem = parseFloat(inputs[2].value)||20; // %
+    const receitaTurma = ticket*qtd;
+    const lucroTurma   = receitaTurma*(margem/100);
+    const custoMidiaAnual = midiaMes*mesesAds;
+    const custoTotal = CUSTO_ANUAL_BASE + custoMidiaAnual;
 
-      const receitaTurma = ticket * qtd;
-      const lucroTurma = receitaTurma * (margem/100);
-      const turmas = [1,2,3,4,5];
-      const rois = turmas.map(t=> ((lucroTurma*t - CUSTO_ANUAL_FIXO)/CUSTO_ANUAL_FIXO)*100);
+    const turmas = Array.from({length:10},(_,i)=>i+1);
+    const rois = turmas.map(t=>((lucroTurma*t - custoTotal)/custoTotal)*100);
 
-      // dimensões no viewBox (responsivo via viewBox + width:100%)
-      const W=600,H=260,baseline=190,left=50;
-      svg.innerHTML='';
+    const W=1000,H=360,baseline=250,left=60;
+    svg.innerHTML='';
 
-      // baseline 0%
-      const base=document.createElementNS('http://www.w3.org/2000/svg','line');
-      base.setAttribute('x1',left);base.setAttribute('y1',baseline);base.setAttribute('x2',W-20);base.setAttribute('y2',baseline);
-      base.setAttribute('stroke','rgba(255,255,255,.35)');base.setAttribute('stroke-dasharray','4 4');
-      svg.appendChild(base);
+    const base=document.createElementNS('http://www.w3.org/2000/svg','line');
+    base.setAttribute('x1',left);base.setAttribute('y1',baseline);
+    base.setAttribute('x2',W-30);base.setAttribute('y2',baseline);
+    base.setAttribute('stroke','rgba(255,255,255,.35)');
+    base.setAttribute('stroke-dasharray','4 4');
+    svg.appendChild(base);
 
-      // escala vertical automática
-      const maxAbs = Math.max(20, Math.ceil(Math.max(...rois.map(v=>Math.abs(v)))/10)*10);
-      const pxPerPct = (baseline-40)/maxAbs;
+    const maxAbs = Math.max(20, Math.ceil(Math.max(...rois.map(v=>Math.abs(v)))/10)*10);
+    const pxPerPct = (baseline-60)/maxAbs;
 
-      turmas.forEach((t,i)=>{
-        const roi = rois[i];
-        const x = left + 50 + i*90;
-        const width = 40;
-        const h = Math.abs(roi) * pxPerPct;
-        const color = roi >= 0
-          ? getComputedStyle(document.documentElement).getPropertyValue('--ok')
-          : getComputedStyle(document.documentElement).getPropertyValue('--bad');
+    turmas.forEach((t,i)=>{
+      const roi = rois[i];
+      const x = left + i*80;
+      const width = 42;
+      const h = Math.abs(roi)*pxPerPct;
+      const color = roi>=0
+        ? getComputedStyle(document.documentElement).getPropertyValue('--ok')
+        : getComputedStyle(document.documentElement).getPropertyValue('--bad');
 
-        const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-        rect.setAttribute('x',x);
-        rect.setAttribute('width',width);
-        rect.setAttribute('fill',color.trim());
-        if(roi>=0){ rect.setAttribute('y',baseline - h); rect.setAttribute('height',h); }
-        else{ rect.setAttribute('y',baseline); rect.setAttribute('height',h); }
-        svg.appendChild(rect);
+      const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',x);
+      rect.setAttribute('width',width);
+      rect.setAttribute('fill',color.trim());
+      rect.setAttribute('rx',5);
+      if(roi>=0){rect.setAttribute('y',baseline-h);rect.setAttribute('height',h);}
+      else{rect.setAttribute('y',baseline);rect.setAttribute('height',h);}
+      svg.appendChild(rect);
 
-        // label eixo X
-        const lx=document.createElementNS('http://www.w3.org/2000/svg','text');
-        lx.setAttribute('x',x+width/2); lx.setAttribute('y',baseline+18);
-        lx.setAttribute('fill','#e7edf8'); lx.setAttribute('font-size','12'); lx.setAttribute('text-anchor','middle');
-        lx.textContent=t; svg.appendChild(lx);
+      const lx=document.createElementNS('http://www.w3.org/2000/svg','text');
+      lx.setAttribute('x',x+width/2);
+      lx.setAttribute('y',baseline+20);
+      lx.setAttribute('fill','#e7edf8');
+      lx.setAttribute('font-size','12');
+      lx.setAttribute('text-anchor','middle');
+      lx.textContent=t;
+      svg.appendChild(lx);
 
-        // valor do ROI
-        const lv=document.createElementNS('http://www.w3.org/2000/svg','text');
-        lv.setAttribute('x',x+width/2); lv.setAttribute('y',roi>=0 ? (baseline - h - 6) : (baseline + h + 14));
-        lv.setAttribute('fill','#99a7c0'); lv.setAttribute('font-size','12'); lv.setAttribute('text-anchor','middle');
-        lv.textContent=(roi>=0?'+':'')+Math.round(roi)+"%";
-        svg.appendChild(lv);
-      });
+      const lv=document.createElementNS('http://www.w3.org/2000/svg','text');
+      lv.setAttribute('x',x+width/2);
+      lv.setAttribute('y',roi>=0?(baseline-h-8):(baseline+h+16));
+      lv.setAttribute('fill','#99a7c0');
+      lv.setAttribute('font-size','12');
+      lv.setAttribute('text-anchor','middle');
+      lv.textContent=(roi>=0?'+':'')+Math.round(roi)+'%';
+      svg.appendChild(lv);
+    });
 
-      // legenda
-      const legendPos=[60,26];
-      const okBox=document.createElementNS('http://www.w3.org/2000/svg','rect'); okBox.setAttribute('x',legendPos[0]); okBox.setAttribute('y',legendPos[1]); okBox.setAttribute('width','10'); okBox.setAttribute('height','10'); okBox.setAttribute('fill',getComputedStyle(document.documentElement).getPropertyValue('--ok').trim()); svg.appendChild(okBox);
-      const okTxt=document.createElementNS('http://www.w3.org/2000/svg','text'); okTxt.setAttribute('x',legendPos[0]+16); okTxt.setAttribute('y',legendPos[1]+9); okTxt.setAttribute('fill','#99a7c0'); okTxt.setAttribute('font-size','12'); okTxt.textContent='ROI positivo'; svg.appendChild(okTxt);
-      const badBox=document.createElementNS('http://www.w3.org/2000/svg','rect'); badBox.setAttribute('x',legendPos[0]+110); badBox.setAttribute('y',legendPos[1]); badBox.setAttribute('width','10'); badBox.setAttribute('height','10'); badBox.setAttribute('fill',getComputedStyle(document.documentElement).getPropertyValue('--bad').trim()); svg.appendChild(badBox);
-      const badTxt=document.createElementNS('http://www.w3.org/2000/svg','text'); badTxt.setAttribute('x',legendPos[0]+126); badTxt.setAttribute('y',legendPos[1]+9); badTxt.setAttribute('fill','#99a7c0'); badTxt.setAttribute('font-size','12'); badTxt.textContent='ROI negativo'; svg.appendChild(badTxt);
+    // legenda
+    const legendPos=[70,30];
+    const okBox=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    okBox.setAttribute('x',legendPos[0]);
+    okBox.setAttribute('y',legendPos[1]);
+    okBox.setAttribute('width','10');
+    okBox.setAttribute('height','10');
+    okBox.setAttribute('fill',getComputedStyle(document.documentElement).getPropertyValue('--ok').trim());
+    svg.appendChild(okBox);
+    const okTxt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    okTxt.setAttribute('x',legendPos[0]+16);
+    okTxt.setAttribute('y',legendPos[1]+9);
+    okTxt.setAttribute('fill','#99a7c0');
+    okTxt.setAttribute('font-size','12');
+    okTxt.textContent='ROI positivo';
+    svg.appendChild(okTxt);
 
-      // resumo (sem exibir o custo, apenas ponto de equilíbrio)
-      const peIndex = rois.findIndex(v=>v>=0);
-      const pe = peIndex >= 0 ? (peIndex+1) : 'acima de 5';
-      resumo.textContent = `Receita por turma: R$ ${receitaTurma.toLocaleString('pt-BR')} • Lucro por turma (~${margem}%): R$ ${Math.round(lucroTurma).toLocaleString('pt-BR')} • Ponto de equilíbrio: ${pe} turmas/ano`;
-    }
+    const badBox=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    badBox.setAttribute('x',legendPos[0]+130);
+    badBox.setAttribute('y',legendPos[1]);
+    badBox.setAttribute('width','10');
+    badBox.setAttribute('height','10');
+    badBox.setAttribute('fill',getComputedStyle(document.documentElement).getPropertyValue('--bad').trim());
+    svg.appendChild(badBox);
+    const badTxt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    badTxt.setAttribute('x',legendPos[0]+146);
+    badTxt.setAttribute('y',legendPos[1]+9);
+    badTxt.setAttribute('fill','#99a7c0');
+    badTxt.setAttribute('font-size','12');
+    badTxt.textContent='ROI negativo';
+    svg.appendChild(badTxt);
 
-    // render inicial + atualização automática ao digitar
-    if(svg){ render(); }
-    inputs.forEach(i=> i && i.addEventListener('input', render));
-    // Re-render ao redimensionar (mantém texto nítido em alguns navegadores)
-    window.addEventListener('resize', render);
-  })();
+    const peIndex=rois.findIndex(v=>v>=0);
+    const pe=peIndex>=0?(peIndex+1):'acima de 10';
+
+    resumo.textContent=
+      `Receita por turma: R$ ${receitaTurma.toLocaleString('pt-BR')} • `+
+      `Lucro por turma (~${margem}%): R$ ${Math.round(lucroTurma).toLocaleString('pt-BR')} • `+
+      `Mídia anual: R$ ${Math.round(custoMidiaAnual).toLocaleString('pt-BR')} • `+
+      `Custo total anual: R$ ${Math.round(custoTotal).toLocaleString('pt-BR')} • `+
+      `Ponto de equilíbrio: ${pe} turmas/ano`;
+  }
+
+  render();
+  inputs.forEach(i=>i.addEventListener('input',render));
+  window.addEventListener('resize',render);
+})();
 </script>
 
 </body>
